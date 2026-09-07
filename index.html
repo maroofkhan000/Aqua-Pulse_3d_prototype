@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aqua Pulse — Industrial Water Purification &amp; Sensor Digital Twin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20267">
+</head>
+<body>
+
+  <!-- 3D WebGL Canvas Container -->
+  <div id="scene"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Top Header Bar -->
+  <header>
+    <div class="brand">
+      <div class="logo-mark">
+        <span class="pulse-ring"></span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="system-title">AQUA PULSE <span class="edition-badge">DIGITAL TWIN v2.4</span></div>
+        <div class="system-sub">Intelligent Multi-Stage Water Purification &amp; Real-Time Sensor Telemetry Skid</div>
+      </div>
+    </div>
+
+    <div class="header-status">
+      <div class="status-pill" id="system-status-pill">
+        <span class="status-dot green" id="status-dot"></span>
+        <span class="status-text" id="status-label">SYSTEM ONLINE • PURIFYING</span>
+      </div>
+      <button class="header-hud-btn" id="btn-header-hud" title="Toggle Context Panels & Data Overlays (Press H)">
+        <span class="hud-icon">👁️</span>
+        <span id="header-hud-label">Hide Panels</span>
+      </button>
+      <div class="ps-tag">
+        <div><b>SIH26040</b> • Smart Hardware</div>
+        <div class="small-meta">WHO / BIS IS 10500 Compliant Architecture</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Real-Time Telemetry Bar (SCADA Stream) -->
+  <aside id="telemetry-bar">
+    <div class="telemetry-section-title">
+      <span>REAL-TIME SENSOR TELEMETRY</span>
+      <span class="live-tag">LIVE 10Hz</span>
+    </div>
+
+    <div class="telemetry-grid">
+      <!-- Intake Quality Card -->
+      <div class="telem-card raw-card">
+        <div class="card-hdr">
+          <span class="sensor-badge">INFLOW SENSORS</span>
+          <span class="flow-marker raw">RAW INLET</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Turbidity (NTU)</span>
+          <span class="metric-val" id="val-raw-turbidity">21.4</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Total Dissolved Solids</span>
+          <span class="metric-val" id="val-raw-tds">385 <small>ppm</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Inlet pH Level</span>
+          <span class="metric-val" id="val-raw-ph">6.92</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Feed Pressure</span>
+          <span class="metric-val" id="val-feed-pressure">24.5 <small>PSI</small></span>
+        </div>
+      </div>
+
+      <!-- Hydraulics Card -->
+      <div class="telem-card hydraulic-card">
+        <div class="card-hdr">
+          <span class="sensor-badge">HYDRAULICS</span>
+          <span class="flow-marker pump">BOOSTER PUMP</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Flow Rate</span>
+          <span class="metric-val highlight-teal" id="val-flow-rate">2.45 <small>L/min</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">RO System Pressure</span>
+          <span class="metric-val highlight-amber" id="val-ro-pressure">71.5 <small>PSI</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Water Temp (DS18B20)</span>
+          <span class="metric-val" id="val-temp">23.8 <small>°C</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">UV-C Flux Intensity</span>
+          <span class="metric-val highlight-violet" id="val-uv-flux">99.2 <small>%</small></span>
+        </div>
+      </div>
+
+      <!-- Purified Output Card -->
+      <div class="telem-card pure-card">
+        <div class="card-hdr">
+          <span class="sensor-badge">PERMEATE QUALITY</span>
+          <span class="flow-marker pure">CLEAN EFFLUENT</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Product Turbidity</span>
+          <span class="metric-val good" id="val-clean-turbidity">0.08 <small>NTU</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Product TDS</span>
+          <span class="metric-val good" id="val-clean-tds">28.5 <small>ppm</small></span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Treated pH</span>
+          <span class="metric-val good" id="val-clean-ph">7.42</span>
+        </div>
+        <div class="sensor-metric">
+          <span class="metric-label">Solenoid Gate</span>
+          <span class="metric-val good" id="val-solenoid-state">PRODUCT (OPEN)</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Interactive Simulation Dock -->
+  <div id="simulation-dock">
+    <div class="dock-row">
+      <div class="dock-label">SIMULATION CONTROLS</div>
+      <button class="action-btn primary" id="btn-toggle-pump">
+        <span class="btn-icon">⚡</span>
+        <span id="pump-btn-text">Pump: Active</span>
+      </button>
+
+      <button class="action-btn warning" id="btn-inject-contaminant">
+        <span class="btn-icon">⚠️</span>
+        <span id="contaminant-btn-text">Test Safety Alert</span>
+      </button>
+
+      <button class="action-btn" id="btn-xray">
+        <span class="btn-icon">👁️</span>
+        <span id="xray-text">Shells: Solid</span>
+      </button>
+
+      <button class="action-btn" id="btn-flow-particles">
+        <span class="btn-icon">💧</span>
+        <span id="particles-text">Flow: Visible</span>
+      </button>
+    </div>
+
+    <div class="dock-row second-row">
+      <div class="dock-label">CAD VIEWS</div>
+      <div class="view-preset-group">
+        <button class="view-preset-btn active" data-preset="iso">Overview (Iso)</button>
+        <button class="view-preset-btn" data-preset="sensors">Sensors Flow Cell</button>
+        <button class="view-preset-btn" data-preset="filters">Filtration Skid</button>
+        <button class="view-preset-btn" data-preset="safety">Safety Gate</button>
+        <button class="view-preset-btn" data-preset="controller">ESP32 Brain</button>
+        <button class="view-preset-btn" data-preset="top">Top Plan</button>
+      </div>
+
+      <div class="dock-separator"></div>
+
+      <button class="action-btn" id="btnExplode">Exploded View</button>
+      <button class="action-btn" id="btnRotate">Auto-Rotate</button>
+      <button class="action-btn active" id="btnLabels">3D Labels: On</button>
+      <button class="action-btn" id="btnTogglePanels" title="Hide/Show Context Panels & Data Overlays (Press H)">
+        <span class="btn-icon">👁️</span>
+        <span id="panels-btn-text">Hide Panels</span>
+      </button>
+      <button class="action-btn" id="btnReset">Reset Camera</button>
+    </div>
+  </div>
+
+  <!-- Legend of Subsystems -->
+  <div id="legend">
+    <div class="legend-header">
+      <h2>SYSTEM MODULES &amp; PIPING</h2>
+      <span class="badge-count" id="parts-count">12 Modules</span>
+    </div>
+    <div class="flow-path-guide">
+      <span class="path-node" data-module="1" title="Click to inspect Raw Tank">Raw Inflow</span>
+      <span class="path-arrow">➔</span>
+      <span class="path-node" data-module="2" title="Click to inspect Booster Pump">Boost Pump</span>
+      <span class="path-arrow">➔</span>
+      <span class="path-node" data-module="3" title="Click to inspect Sensors Flow Cell">Inline Sensors</span>
+      <span class="path-arrow">➔</span>
+      <span class="path-node" data-module="4" title="Click to inspect Filtration Skid">3-Stage Filter</span>
+      <span class="path-arrow">➔</span>
+      <span class="path-node" data-module="7" title="Click to inspect UV Reactor">UV Sterilizer</span>
+      <span class="path-arrow">➔</span>
+      <span class="path-node" data-module="8" title="Click to inspect Safety Gate">Safety Divert</span>
+    </div>
+    <div id="legend-rows"></div>
+  </div>
+
+  <!-- Detailed Component Specifications Panel -->
+  <div id="detail" class="empty">
+    <div class="detail-header">
+      <div class="detail-type-badge" id="detail-category">COMPONENT SPECS</div>
+      <button id="close-detail" title="Close">×</button>
+    </div>
+    <h3 class="part-name" id="detail-title">Select Any Component</h3>
+    <p class="part-desc" id="detail-desc">Click any 3D part or module to view key specs.</p>
+    <div id="detail-specs" class="specs-table-container"></div>
+  </div>
+
+  <!-- Navigation Helper Hint -->
+  <div id="hint">
+    <kbd>Left Drag</kbd> Orbit • <kbd>Right Drag</kbd> Pan • <kbd>Scroll</kbd> Zoom • <kbd>Click</kbd> Inspect Component Specs
+  </div>
+
+  <!-- External Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js?v=20267"></script>
+</body>
+</html>
