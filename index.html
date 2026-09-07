@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20267">
+  <link rel="stylesheet" href="style.css?v=20269">
 </head>
 <body>
 
@@ -78,46 +78,22 @@
         </div>
       </div>
 
-      <!-- Hydraulics Card -->
-      <div class="telem-card hydraulic-card">
-        <div class="card-hdr">
-          <span class="sensor-badge">HYDRAULICS</span>
-          <span class="flow-marker pump">BOOSTER PUMP</span>
-        </div>
-        <div class="sensor-metric">
-          <span class="metric-label">Flow Rate</span>
-          <span class="metric-val highlight-teal" id="val-flow-rate">2.45 <small>L/min</small></span>
-        </div>
-        <div class="sensor-metric">
-          <span class="metric-label">RO System Pressure</span>
-          <span class="metric-val highlight-amber" id="val-ro-pressure">71.5 <small>PSI</small></span>
-        </div>
-        <div class="sensor-metric">
-          <span class="metric-label">Water Temp (DS18B20)</span>
-          <span class="metric-val" id="val-temp">23.8 <small>°C</small></span>
-        </div>
-        <div class="sensor-metric">
-          <span class="metric-label">UV-C Flux Intensity</span>
-          <span class="metric-val highlight-violet" id="val-uv-flux">99.2 <small>%</small></span>
-        </div>
-      </div>
-
       <!-- Purified Output Card -->
       <div class="telem-card pure-card">
         <div class="card-hdr">
-          <span class="sensor-badge">PERMEATE QUALITY</span>
-          <span class="flow-marker pure">CLEAN EFFLUENT</span>
+          <span class="sensor-badge">PURIFIED WATER</span>
+          <span class="flow-marker pure">CLEAN OUTLET</span>
         </div>
         <div class="sensor-metric">
-          <span class="metric-label">Product Turbidity</span>
+          <span class="metric-label">Clean Turbidity</span>
           <span class="metric-val good" id="val-clean-turbidity">0.08 <small>NTU</small></span>
         </div>
         <div class="sensor-metric">
-          <span class="metric-label">Product TDS</span>
+          <span class="metric-label">Clean TDS</span>
           <span class="metric-val good" id="val-clean-tds">28.5 <small>ppm</small></span>
         </div>
         <div class="sensor-metric">
-          <span class="metric-label">Treated pH</span>
+          <span class="metric-label">Purified pH</span>
           <span class="metric-val good" id="val-clean-ph">7.42</span>
         </div>
         <div class="sensor-metric">
@@ -217,6 +193,6 @@
 
   <!-- External Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="script.js?v=20267"></script>
+  <script src="script.js?v=20269"></script>
 </body>
 </html>

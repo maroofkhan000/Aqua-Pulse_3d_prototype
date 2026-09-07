@@ -626,8 +626,11 @@ header {
   bottom: 24px;
   right: 20px;
   width: 260px;
+  min-height: 276px;
   max-height: calc(50vh - 55px);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
   border-radius: 10px;

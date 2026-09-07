@@ -1044,7 +1044,7 @@
       desc: 'Stores certified potable water with swan-neck dispensing tap.',
       specs: [
         { k: 'Water Quality', v: 'WHO & BIS IS 10500 Potable' },
-        { k: 'Buffer Tank', v: '15 Liter Pure Effluent' }
+        { k: 'Buffer Tank', v: '15 Liter Clean Water' }
       ],
       swatchColor: '#0EA5E9'
     });
@@ -1362,14 +1362,14 @@
     elRawPh.textContent = Sim.rawPH.toFixed(2);
     elFeedPres.innerHTML = `${Sim.feedPressure.toFixed(1)} <small>PSI</small>`;
 
-    elFlowRate.innerHTML = `${Sim.flowRate.toFixed(2)} <small>L/min</small>`;
-    elRoPres.innerHTML = `${Sim.roPressure.toFixed(1)} <small>PSI</small>`;
-    elTemp.innerHTML = `${Sim.waterTemp.toFixed(1)} <small>°C</small>`;
-    elUvFlux.innerHTML = `${Sim.uvIntensity.toFixed(1)} <small>%</small>`;
+    if (elFlowRate) elFlowRate.innerHTML = `${Sim.flowRate.toFixed(2)} <small>L/min</small>`;
+    if (elRoPres) elRoPres.innerHTML = `${Sim.roPressure.toFixed(1)} <small>PSI</small>`;
+    if (elTemp) elTemp.innerHTML = `${Sim.waterTemp.toFixed(1)} <small>°C</small>`;
+    if (elUvFlux) elUvFlux.innerHTML = `${Sim.uvIntensity.toFixed(1)} <small>%</small>`;
 
-    elCleanTurb.textContent = `${Sim.cleanTurbidity.toFixed(2)} NTU`;
-    elCleanTds.innerHTML = `${Sim.cleanTDS.toFixed(1)} <small>ppm</small>`;
-    elCleanPh.textContent = Sim.cleanPH.toFixed(2);
+    if (elCleanTurb) elCleanTurb.textContent = `${Sim.cleanTurbidity.toFixed(2)} NTU`;
+    if (elCleanTds) elCleanTds.innerHTML = `${Sim.cleanTDS.toFixed(1)} <small>ppm</small>`;
+    if (elCleanPh) elCleanPh.textContent = Sim.cleanPH.toFixed(2);
 
     if (Sim.solenoidDiverting) {
       elSolenoid.textContent = 'REJECT DIVERTER (ACTIVE)';
